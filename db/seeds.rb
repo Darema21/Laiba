@@ -2,14 +2,14 @@ require 'faker'
 
 puts 'Creating Users'
 
-users = Array.new(3) do
+3.times do
   User.create(nickname: Faker::Name.unique.name)
 end
 
 puts 'Creating Events'
 
 5.times do
-  event = Event.new(
+  event = Event.create(
     title: Faker::Lorem.sentence,
     description: Faker::Lorem.paragraph,
     start_time: Faker::Time.between(from: DateTime.now, to: DateTime.now + 30),
