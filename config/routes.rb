@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       end
       resources :users, only: [:show]
       resources :bookings, only: [:index, :create, :destroy, :show]
+
+      post 'login', to: 'sessions#login', as: :login
     end
   end
 end

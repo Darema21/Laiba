@@ -3,6 +3,7 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   def index
     @events = Event.all
+    render  json: @events
   end
 
   def create
@@ -55,5 +56,4 @@ class Api::V1::EventsController < Api::V1::BaseController
     render json: { errors: @event.errors.full_messages },
     status: :unprocessable_entity
   end
-
 end
