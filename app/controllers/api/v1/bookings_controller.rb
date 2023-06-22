@@ -1,5 +1,6 @@
 class Api::V1::BookingsController < Api::V1::BaseController
-  before_action :set_evenr, only: :create
+  skip_before_action :verify_authenticity_token, only: [:create]
+  before_action :set_event, only: :create
 
   def create
     @booking = @event.bookings.build(booking_params)
@@ -12,7 +13,7 @@ class Api::V1::BookingsController < Api::V1::BaseController
 
   def destroy
     @booking = Booking.find(params[:id])
-    @booking = destroy
+    @booking.destroy
     redirect_to event_path(@booking.event), status: :see_other
   end
 

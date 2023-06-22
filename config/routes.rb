@@ -4,11 +4,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :events do
         member do
-          post :booking
+          post :booking, to: 'bookings#create'
         end
       end
       resources :users, only: [:show]
-      resources :bookings, only: [:index, :create, :destroy, :show]
+      resources :bookings, only: [:create, :destroy]
     end
   end
 end
