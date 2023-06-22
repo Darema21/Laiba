@@ -39,7 +39,7 @@ puts 'Creating Bookings'
 
 10.times do
   Booking.create(
-    user: User.all.sample,        # Assign a random user as the booking's user
-    event: Event.all.sample       # Assign a random event as the booking's event
+    user: User.all.sample,
+    event: Event.all.sample
   )
 end

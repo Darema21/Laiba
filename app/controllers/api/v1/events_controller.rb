@@ -16,17 +16,7 @@ class Api::V1::EventsController < Api::V1::BaseController
 
 
   def show
-    render json: {
-      id: @event.id,
-      title: @event.title,
-      description: @event.description,
-      address: @event.address,
-      user_id: @event.user_id,
-      start_time: @event.start_time.strftime('%B %d, %Y'),
-      end_time: @event.end_time.strftime('%B %d, %Y')
-    #   # start_time: @event.start_time,
-    #   # end_time: @event.end_time
-    }
+    @booking = Booking.new
   end
 
   def update
