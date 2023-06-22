@@ -1,5 +1,4 @@
 class Api::V1::SessionsController < Api::V1::BaseController
-
   skip_before_action :verify_request, only: [:login]
 
   def login
@@ -14,7 +13,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
 
   private
 
-  # retrieve open id
+  # retrieve/fetch open id
   def fetch_wx_open_id(code)
     app_id = Rails.application.credentials.dig(:wechat, :app_id)
     app_secret = Rails.application.credentials.dig(:wechat, :app_secret)

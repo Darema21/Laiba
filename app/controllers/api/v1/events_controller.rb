@@ -3,7 +3,9 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   def index
     @events = Event.all
-    render  json: @events
+    render  json: {
+      event: @events
+    }
   end
 
   def create
@@ -14,7 +16,6 @@ class Api::V1::EventsController < Api::V1::BaseController
       render_error
     end
   end
-
 
   def show
     # render json: @event
