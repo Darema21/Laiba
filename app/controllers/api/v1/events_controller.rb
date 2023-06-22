@@ -16,15 +16,16 @@ class Api::V1::EventsController < Api::V1::BaseController
 
 
   def show
-    # render json: @event
     render json: {
       id: @event.id,
       title: @event.title,
       description: @event.description,
       address: @event.address,
       user_id: @event.user_id,
-      start_time: @event.start_time.strftime('%b %d, %Y'),
-      end_time: @event.end_time.strftime('%b %d, %Y')
+      start_time: @event.start_time.strftime('%B %d, %Y'),
+      end_time: @event.end_time.strftime('%B %d, %Y')
+    #   # start_time: @event.start_time,
+    #   # end_time: @event.end_time
     }
   end
 
