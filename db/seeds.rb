@@ -2,7 +2,7 @@ require 'faker'
 
 puts 'Creating Users'
 
-3.times do
+5.times do
   User.create(nickname: Faker::Name.unique.name)
 end
 
@@ -37,7 +37,7 @@ end
 
 puts 'Creating Bookings'
 
-10.times do
+7.times do
   Booking.create(
     user: User.all.sample,
     event: Event.all.sample
