@@ -1,5 +1,6 @@
 class Api::V1::EventsController < Api::V1::BaseController
   before_action :set_event, only: [ :show, :update, :destroy ]
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
     @events = Event.all

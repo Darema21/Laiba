@@ -14,7 +14,7 @@ class Api::V1::BookingsController < Api::V1::BaseController
       if @booking.save
         render json: @booking.event
       else
-        render 'events/show', status: :unprocessable_entity
+        render "events/show", status: :unprocessable_entity
       end
     end
   end
