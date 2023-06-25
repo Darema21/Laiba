@@ -2,14 +2,15 @@ class Event < ApplicationRecord
   belongs_to :user
   has_many :bookings, dependent: :destroy
 
-  validates :title, presence: true
-  validates :description, presence: true
+  validates :title, presence: true, length: { maximum: 50 }
+  validates :description, presence: true, length: { maximum: 300 }
   validates :start_time, presence: true
   validates :end_time, presence: true
   validates :address, presence: true
-  validates :user_id, presence: true
+  # validates :user_id, presence: true
 
   validate :end_time_after_start_time
+  serialize :category
 
   private
 

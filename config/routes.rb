@@ -6,6 +6,9 @@ Rails.application.routes.draw do
         member do
           post :booking, to: 'bookings#create'
         end
+        collection do
+          get :category, to: 'events#category'
+        end
       end
       resources :users, only: [:show]
     end

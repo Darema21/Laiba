@@ -2,13 +2,19 @@ require 'faker'
 
 puts 'Creating Users'
 
+users = []
+
 5.times do
-  User.create(nickname: Faker::Name.unique.name)
+  user = User.create(nickname: Faker::Name.unique.name)
+  users << user
 end
 
 puts 'Creating Events'
 
+categories = ['food', 'music', 'sports', 'nightlife', 'art']
+
 5.times do
+  category = categories.sample
   start_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
 
@@ -16,20 +22,23 @@ puts 'Creating Events'
     end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end
 
+  title = Faker::TvShows::BigBangTheory.quote[0, 50] # Limit title to 50 characters
+  description = Faker::Lorem.paragraph(sentence_count: 5, supplemental: false, random_sentences_to_add: 4)[0, 300] # Limit description to 200 characters
+
+  user = users.sample
+
   event = Event.create(
-    title: Faker::Lorem.sentence,
-    description: Faker::Lorem.paragraph,
-    #start_time: Faker::Time.between_dates(from: DateTime.now, to: DateTime.now + 30, format: :long),
-    #end_time: Faker::Time.between_dates(from: DateTime.now + 31, to: DateTime.now + 60, format: :long),
+    title: title,
+    description: description,
     start_time: start_time,
     end_time: end_time,
     address: Faker::Address.full_address,
-    user: User.all.sample
+    user: user,
+    category: category
   )
 
-
   if event.save
-    p "Event '#{event.title}' created successfully"
+    p "Event '#{event.id}' created successfully by User '#{user.id}'"
   else
     p "Error creating event: #{event.errors.full_messages.join(', ')}"
   end
@@ -38,8 +47,17 @@ end
 puts 'Creating Bookings'
 
 7.times do
-  Booking.create(
-    user: User.all.sample,
-    event: Event.all.sample
+  user = users.sample
+  event = Event.all.sample
+
+  booking = Booking.create(
+    user: user,
+    event: event
   )
+
+  if booking.save
+    p "Booking created successfully: User '#{user.id}' booked Event '#{event.id}'"
+  else
+    p "Error creating booking: #{booking.errors.full_messages.join(', ')}"
+  end
 end

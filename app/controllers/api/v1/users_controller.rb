@@ -1,2 +1,6 @@
-class Api::V1::index_bookings_on_user_idsController < Api::V1::BaseController
+class Api::V1::UsersController < Api::V1::BaseController
+  def show
+    user = User.find(params[:id])
+    render json: user, include: [:events, :bookings]
+  end
 end

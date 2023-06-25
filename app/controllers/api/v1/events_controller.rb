@@ -1,6 +1,6 @@
 class Api::V1::EventsController < Api::V1::BaseController
   before_action :set_event, only: [ :show, :update, :destroy ]
-  skip_before_action :verify_authenticity_token, only: [:create]
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
   def index
     @events = Event.all
@@ -29,8 +29,17 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def destroy
-    @event.destroy
-    head :no_content
+    if @event.destroy
+      head :no_content
+    else
+      render_error
+    end
+  end
+
+  def category
+    category = params[:category]
+    @events = Event.where(category: category)
+    render :index
   end
 
   private
@@ -40,7 +49,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :address, :start_time, :end_time)
+    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :user_id)
   end
 
   def render_error
