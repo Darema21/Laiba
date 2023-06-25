@@ -5,9 +5,10 @@ puts 'Creating Users'
 users = []
 
 5.times do
-  user = User.create(nickname: Faker::Name.unique.name)
+  user = User.create(nickname: Faker::Name.unique.name, for_hire: [true, false].sample)
   users << user
 end
+
 
 puts 'Creating Events'
 

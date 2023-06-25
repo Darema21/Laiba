@@ -10,7 +10,11 @@ Rails.application.routes.draw do
           get :category, to: 'events#category'
         end
       end
-      resources :users, only: [:show]
+      resources :users, only: [:show] do
+        collection do
+          get :promoters
+        end
+      end
     end
   end
 end

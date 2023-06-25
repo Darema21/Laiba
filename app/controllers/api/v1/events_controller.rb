@@ -9,12 +9,12 @@ class Api::V1::EventsController < Api::V1::BaseController
   def create
     @event = Event.new(event_params)
     if @event.save
+      current_user.update_for_hire_status
       render :show, status: :created
     else
       render_error
     end
   end
-
 
   def show
     @booking = Booking.new
