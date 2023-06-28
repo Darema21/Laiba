@@ -14,7 +14,7 @@ puts 'Creating Events'
 
 categories = ['food', 'music', 'sports', 'nightlife', 'art']
 
-5.times do
+8.times do
   category = categories.sample
   start_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)

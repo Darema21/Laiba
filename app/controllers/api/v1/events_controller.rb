@@ -49,7 +49,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :user_id)
+    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :category, :user_id)
   end
 
   def render_error

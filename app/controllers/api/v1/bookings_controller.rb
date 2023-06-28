@@ -12,7 +12,8 @@ class Api::V1::BookingsController < Api::V1::BaseController
     else
       @booking = Booking.new(booking_params)
       if @booking.save
-        booking.event.user.update_for_hire_status
+        event = Event.find_by(event_id: booking_params[:event_id])
+        event.user.update_for_hire_status
         render json: @booking.event
       else
         render "events/show", status: :unprocessable_entity
