@@ -1,11 +1,12 @@
 require 'faker'
 
+
 puts 'Creating Users'
 
 users = []
 
 5.times do
-  user = User.create(nickname: Faker::Name.unique.name, for_hire: [true, false].sample)
+  user = User.create(nickname: Faker::Name.unique.name, for_hire: false)
   users << user
 end
 

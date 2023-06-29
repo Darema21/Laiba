@@ -2,6 +2,7 @@ show.json.jbuilder
 json.extract! @user, :id, :nickname, :for_hire
 
 json.booked_events @booked_events
+json.recieved_bookings @recieved_bookings
 
 json.organized_events @user.events.joins(:bookings) do |event|
  json.id event.id
