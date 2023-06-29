@@ -59,6 +59,7 @@ group :development, :test do
 end
 
 gem "faker"
+gem 'cloudinary'
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
