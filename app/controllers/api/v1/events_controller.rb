@@ -48,7 +48,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :category, :user_id)
+    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :category, :user_id, :image)
   end
 
   def render_error
@@ -57,3 +57,5 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
 end
+
+# darema 6.29 line 52 added :image
