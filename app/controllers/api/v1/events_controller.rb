@@ -12,11 +12,13 @@ class Api::V1::EventsController < Api::V1::BaseController
     else
       render_error
     end
-  end
 
+    @event.user = current_user
+  end
 
   def show
     @booking = Booking.new
+    authorize @event
   end
 
   def update
