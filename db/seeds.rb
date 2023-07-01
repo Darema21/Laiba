@@ -1,7 +1,35 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'faker'
+
+puts 'Creating Users'
+
+3.times do
+  User.create(nickname: Faker::Name.unique.name)
+end
+
+puts 'Creating Events'
+
+5.times do
+  event = Event.create(
+    title: Faker::Lorem.sentence,
+    description: Faker::Lorem.paragraph,
+    start_time: Faker::Time.between(from: DateTime.now, to: DateTime.now + 30),
+    end_time: Faker::Time.between(from: DateTime.now + 31, to: DateTime.now + 60),
+    address: Faker::Address.full_address,
+    user: User.all.sample  # Assign a random user as the event's user
+  )
+
+  if event.save
+    p "Event '#{event.title}' created successfully"
+  else
+    p "Error creating event: #{event.errors.full_messages.join(', ')}"
+  end
+end
+
+puts 'Creating Bookings'
+
+10.times do
+  Booking.create(
+    user: User.all.sample,        # Assign a random user as the booking's user
+    event: Event.all.sample       # Assign a random event as the booking's event
+  )
+end
