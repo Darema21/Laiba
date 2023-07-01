@@ -1,5 +1,5 @@
 class Api::V1::EventsController < Api::V1::BaseController
-  before_action :set_event, only: [ :show, :update, :destroy ]
+  before_action :set_event, only: [ :show, :update, :destroy, :upload_image ]
   skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
   def index
@@ -13,6 +13,10 @@ class Api::V1::EventsController < Api::V1::BaseController
     else
       render_error
     end
+  end
+
+  def upload_image
+
   end
 
   def show
