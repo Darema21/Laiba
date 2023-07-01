@@ -2,26 +2,34 @@ class Api::V1::EventsController < Api::V1::BaseController
   before_action :set_event, only: [ :show, :update, :destroy ]
 
   def index
-    @events = Event.all
+    @events = policy_scope(Event).all
   end
 
   def create
     @event = Event.new(event_params)
+    @event.user = current_user
+
+    authorize @event
+
     if @event.save
       render :show, status: :created
     else
       render_error
     end
+  end
 
-    @event.user = current_user
+  def edit
+
   end
 
   def show
+    # authorize @event
     @booking = Booking.new
-    authorize @event
   end
 
   def update
+    # authorize @event
+
     if @event.update(event_params)
       render :show
     else
@@ -30,6 +38,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def destroy
+    # authorize @event
     @event.destroy
     head :no_content
   end
@@ -38,6 +47,7 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   def set_event
     @event = Event.find(params[:id])
+    authorize @event
   end
 
   def event_params
@@ -48,5 +58,4 @@ class Api::V1::EventsController < Api::V1::BaseController
     render json: { errors: @event.errors.full_messages },
     status: :unprocessable_entity
   end
-
 end
