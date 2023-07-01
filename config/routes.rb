@@ -7,10 +7,17 @@ Rails.application.routes.draw do
       resources :events do
         member do
           post :booking, to: 'bookings#create'
+          post :upload_image
+        end
+        collection do
+          get :category, to: 'events#category'
         end
       end
-      resources :users, only: [:show]
-      resources :bookings, only: [:create, :destroy]
+      resources :users, only: [:show] do
+        collection do
+          get :promoters
+        end
+      end
     end
   end
 end

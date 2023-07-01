@@ -1,29 +1,37 @@
 class Api::V1::BookingsController < Api::V1::BaseController
   skip_before_action :verify_authenticity_token, only: [:create]
   before_action :set_event, only: :create
+  # after_action :update_for_hire, only: [:create, :destroy]
 
   def create
-    @booking = @event.bookings.build(booking_params)
-    if @booking.save
-      redirect_to event_path(@event)
+    existing_booking = Booking.find_by(event_id: booking_params[:event_id], user_id: booking_params[:user_id])
+    if existing_booking
+      existing_booking.destroy
+      render json: existing_booking.event
     else
-      render 'events/show', status: :unprocessable_entity
+      @booking = Booking.new(booking_params)
+      if @booking.save
+        render json: @booking.event
+      else
+        render "events/show", status: :unprocessable_entity
+      end
     end
   end
 
-  def destroy
-    @booking = Booking.find(params[:id])
-    @booking.destroy
-    redirect_to event_path(@booking.event), status: :see_other
-  end
-
   private
+
+  def update_for_hire
+    user = @booking.event.user
+    user.update_for_hire
+  end
 
   def set_event
     @event = Event.find(params[:id])
   end
 
   def booking_params
+    # { event_id: 1, user_id: 1 }
+    # { booking: { event_id: 1, user_id: 1 } }
     params.require(:booking).permit(:event_id, :user_id)
   end
 end

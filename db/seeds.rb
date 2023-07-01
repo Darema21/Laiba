@@ -2,13 +2,28 @@ require 'faker'
 
 puts 'Creating Users'
 
-3.times do
-  User.create(nickname: Faker::Name.unique.name)
+users = []
+
+5.times do
+  rates = {
+    'art' => rand(500..2000),
+    'food' => [nil, rand(500..2000)].sample,
+    'sports' => rand(500..2000),
+    'nightlife' => rand(500..2000),
+    'music' => rand(500..2000)
+  }
+
+  user = User.create(nickname: Faker::Name.unique.name, for_hire: false, rates: rates)
+  users << user
 end
+
 
 puts 'Creating Events'
 
-5.times do
+categories = ['food', 'music', 'sports', 'nightlife', 'art']
+
+7.times do
+  category = categories.sample
   start_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
 
@@ -16,20 +31,28 @@ puts 'Creating Events'
     end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end
 
+  title = Faker::TvShows::BigBangTheory.quote[0, 50] # Limit title to 50 characters
+  description = Faker::Lorem.paragraph(sentence_count: 5, supplemental: false, random_sentences_to_add: 4)[0, 300] # Limit description to 200 characters
+
+  user = users.sample
+
   event = Event.create(
-    title: Faker::Lorem.sentence,
-    description: Faker::Lorem.paragraph,
-    #start_time: Faker::Time.between_dates(from: DateTime.now, to: DateTime.now + 30, format: :long),
-    #end_time: Faker::Time.between_dates(from: DateTime.now + 31, to: DateTime.now + 60, format: :long),
+    title: title,
+    description: description,
     start_time: start_time,
     end_time: end_time,
     address: Faker::Address.full_address,
-    user: User.all.sample
+    user: user,
+    category: category
   )
+
+  # # Generate a random image file name from the images directory
+  # image_file = Dir.glob(Rails.root.join('app', 'assets', 'images', '*')).sample
+  # event.image.attach(io: File.open(image_file), filename: File.basename(image_file))
 
 
   if event.save
-    p "Event '#{event.title}' created successfully"
+    p "Event '#{event.id}' created successfully by User '#{user.id}'"
   else
     p "Error creating event: #{event.errors.full_messages.join(', ')}"
   end
@@ -37,9 +60,18 @@ end
 
 puts 'Creating Bookings'
 
-10.times do
-  Booking.create(
-    user: User.all.sample,
-    event: Event.all.sample
+21.times do
+  user = users.sample
+  event = Event.all.sample
+
+  booking = Booking.create(
+    user: user,
+    event: event
   )
+
+  if booking.save
+    p "Booking created successfully: User '#{user.id}' booked Event '#{event.id}'"
+  else
+    p "Error creating booking: #{booking.errors.full_messages.join(', ')}"
+  end
 end

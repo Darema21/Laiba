@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_27_135203) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_30_131214) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_135203) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -39,8 +41,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_135203) do
     t.string "nickname"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+
+    t.boolean "for_hire", default: false, null: false
+    t.json "rates", default: {}
+
     t.string "open_id"
     t.string "avatar"
+
   end
 
   add_foreign_key "bookings", "events"

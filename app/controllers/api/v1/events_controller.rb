@@ -1,5 +1,6 @@
 class Api::V1::EventsController < Api::V1::BaseController
-  before_action :set_event, only: [ :show, :update, :destroy ]
+  before_action :set_event, only: [ :show, :update, :destroy, :upload_image ]
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
   def index
     @events = policy_scope(Event).all
@@ -18,6 +19,11 @@ class Api::V1::EventsController < Api::V1::BaseController
     end
   end
 
+
+  def upload_image
+
+  end
+
   def show
     # authorize @event
     @booking = Booking.new
@@ -34,6 +40,17 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def destroy
+    if @event.destroy
+      head :no_content
+    else
+      render_error
+    end
+  end
+
+  def category
+    category = params[:category]
+    @events = Event.where(category: category)
+    render :index
     # authorize @event
     @event.destroy
     head :no_content
@@ -47,7 +64,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :address, :start_time, :end_time)
+    params.require(:event).permit(:title, :description, :address, :start_time, :end_time, :category, :user_id, :image)
   end
 
   def render_error
@@ -55,3 +72,5 @@ class Api::V1::EventsController < Api::V1::BaseController
     status: :unprocessable_entity
   end
 end
+
+# darema 6.29 line 52 added :image
