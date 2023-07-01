@@ -5,3 +5,4 @@
     json.promoter do
       json.extract! @event.user, :id, :nickname
     end
+    json.can_edit policy(@event).edit?
