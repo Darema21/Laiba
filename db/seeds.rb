@@ -1,12 +1,19 @@
 require 'faker'
 
-
 puts 'Creating Users'
 
 users = []
 
 5.times do
-  user = User.create(nickname: Faker::Name.unique.name, for_hire: false)
+  rates = {
+    'art' => rand(500..2000),
+    'food' => [nil, rand(500..2000)].sample,
+    'sports' => rand(500..2000),
+    'nightlife' => rand(500..2000),
+    'music' => rand(500..2000)
+  }
+
+  user = User.create(nickname: Faker::Name.unique.name, for_hire: false, rates: rates)
   users << user
 end
 
@@ -15,7 +22,7 @@ puts 'Creating Events'
 
 categories = ['food', 'music', 'sports', 'nightlife', 'art']
 
-8.times do
+7.times do
   category = categories.sample
   start_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
   end_time = Faker::Time.forward(days: 5, period: :evening, format: :long)
@@ -39,6 +46,11 @@ categories = ['food', 'music', 'sports', 'nightlife', 'art']
     category: category
   )
 
+  # # Generate a random image file name from the images directory
+  # image_file = Dir.glob(Rails.root.join('app', 'assets', 'images', '*')).sample
+  # event.image.attach(io: File.open(image_file), filename: File.basename(image_file))
+
+
   if event.save
     p "Event '#{event.id}' created successfully by User '#{user.id}'"
   else
@@ -48,7 +60,7 @@ end
 
 puts 'Creating Bookings'
 
-7.times do
+21.times do
   user = users.sample
   event = Event.all.sample
 

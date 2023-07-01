@@ -8,7 +8,7 @@ class Event < ApplicationRecord
   validates :start_time, presence: true
   validates :end_time, presence: true
   validates :address, presence: true
-  validates :image, presence: true # to upload event posters
+  # validates :image, presence: true # to upload event posters
   # validates :user_id, presence: true
 
   validate :end_time_after_start_time
