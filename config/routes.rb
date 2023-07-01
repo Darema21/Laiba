@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :events do
         member do
           post :booking, to: 'bookings#create'
+          post :upload_image
         end
         collection do
           get :category, to: 'events#category'
