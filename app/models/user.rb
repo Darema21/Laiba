@@ -1,3 +1,6 @@
 class User < ApplicationRecord
-  validates :open_id, :nickname, presence: true
+  has_many :bookings
+  has_many :events, through: :bookings
+
+  validates :open_id, presence: true
 end

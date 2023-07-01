@@ -2,14 +2,15 @@ class Api::V1::EventsController < Api::V1::BaseController
   before_action :set_event, only: [ :show, :update, :destroy ]
 
   def index
-    @events = Event.all
-    render  json: {
-      event: @events
-    }
+    @events = policy_scope(Event).all
   end
 
   def create
     @event = Event.new(event_params)
+    @event.user = current_user
+
+    authorize @event
+
     if @event.save
       render :show, status: :created
     else
@@ -18,19 +19,13 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def show
-    # render json: @event
-    render json: {
-      id: @event.id,
-      title: @event.title,
-      description: @event.description,
-      address: @event.address,
-      user_id: @event.user_id,
-      start_time: @event.start_time.strftime('%b %d, %Y'),
-      end_time: @event.end_time.strftime('%b %d, %Y')
-    }
+    # authorize @event
+    @booking = Booking.new
   end
 
   def update
+    # authorize @event
+
     if @event.update(event_params)
       render :show
     else
@@ -39,6 +34,7 @@ class Api::V1::EventsController < Api::V1::BaseController
   end
 
   def destroy
+    # authorize @event
     @event.destroy
     head :no_content
   end
@@ -47,6 +43,7 @@ class Api::V1::EventsController < Api::V1::BaseController
 
   def set_event
     @event = Event.find(params[:id])
+    authorize @event
   end
 
   def event_params
